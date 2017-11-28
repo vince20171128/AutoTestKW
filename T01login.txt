@@ -1,0 +1,34 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          LoginFlowKeyword.txt
+
+*** Test Cases ***
+用户正常登录_教育局
+    登录    15807550000    123456    学校
+    Close All Browsers
+
+用户正常登录_教研员
+    登录    15807551000    123456    用户
+    Close All Browsers
+
+用户正常登录_学校
+    登录    15807550005    123456    学生
+    Close All Browsers
+
+用户正常登录_组长
+    登录    15698090043    123456    成绩
+    Close All Browsers
+
+用户正常登录_老师
+    登录    15231135115    123456    评卷
+    Close All Browsers
+
+用户异常登录_错误账号
+    [Setup]
+    异常登录_错误用户名密码    1255    123456
+
+用户异常登录_错误密码
+    异常登录_错误用户名密码    15807550000    234222
+
+用户正常登录_空输入
+    异常登录_空输入
