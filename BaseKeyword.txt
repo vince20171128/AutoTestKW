@@ -1,0 +1,61 @@
+*** Keywords ***
+打开浏览器
+    [Arguments]    ${url}
+    Open Browser    ${url}
+
+窗口最大化
+    Maximize Browser Window
+
+输入用户名
+    Input Text    id=user    ${user}
+
+输入密码
+    Input Text    id=pwd    ${pwd}
+
+点击按钮
+    [Arguments]    ${buttonname}
+    Click Button    ${buttonname}
+
+关闭浏览器
+    Close All Browsers
+
+输入文本
+    [Arguments]    ${attribute}    ${name}
+    Input Text    ${attribute}    ${name}
+
+点击元素
+    [Arguments]    ${locator}
+    Click Element    ${locator}
+
+选择radio
+    [Arguments]    ${name}    ${value}
+    Select Radio Button    ${name}    ${value}
+
+选择frame
+    [Arguments]    ${locator}
+    Select Frame    ${locator}
+
+退出frame
+    Unselect Frame
+
+点击复选框
+    [Arguments]    ${locator}
+    Select Checkbox    ${locator}
+
+等待
+    [Arguments]    ${locate}
+    Wait Until Page Contains Element    ${locate}    20    'time out'
+
+点击下一步
+    点击元素    id=next-step    #此处不能用点击按钮
+
+点击完成
+    退出frame
+    等待    xpath=//iframe[@name='ifContent_tc']
+    选择frame    xpath=//iframe[@name='ifContent_tc']
+    点击元素    id=submitBtn
+
+点击确定
+    退出frame
+    等待    id=kwin_dialog_submit
+    点击元素    id=kwin_dialog_submit

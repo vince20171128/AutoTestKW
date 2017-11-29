@@ -1,0 +1,77 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          StartExamFlowKeyword.txt
+Resource          LoginFlowKeyword.txt
+
+*** Test Cases ***
+发起期末考试(导入考生)
+    登录    18207550000    123456    学校    #检查学校元素是否存在
+    点击发起考试
+    输入考试名称
+    选择考试年级    9    #9代表初三
+    选择考试类型    final-exam    #mock-exam或final-exam
+    选择考试报表类型    0    #0或1
+    点击下一步
+    选择考试科目    语文
+    选择教研员    语文教研员
+    点击下一步
+    选择加入考生方式    1
+    选择参考学校
+    点击完成
+    点击确定
+    关闭浏览器
+
+发起模拟考试(同步考生)
+    登录    18207550000    123456    学校    #检查学校元素是否存在
+    点击发起考试
+    输入考试名称
+    选择考试年级    11    #11代表高二
+    选择考试类型    mock-exam    #mock-exam或final-exam
+    选择考试报表类型    0    #0或1
+    点击下一步
+    选择考试科目    数学
+    选择教研员    数学教研员
+    点击下一步
+    选择加入考生方式    2
+    选择参考学校
+    点击完成
+    点击确定
+    关闭浏览器
+
+发起多科目考试(导入考生)
+    登录    18207550000    123456    学校    #检查学校元素是否存在
+    点击发起考试
+    输入考试名称
+    选择考试年级    11    #11代表高二
+    选择考试类型    mock-exam    #mock-exam或final-exam
+    选择考试报表类型    0    #0或1
+    点击下一步
+    等待    xpath=.//*[@id='subjects-content']/div[1]/div[1]
+    点击元素    xpath=.//*[@id='subjects-content']/div[1]/div[1]
+    : FOR    ${count}    IN    2
+    \    ${subjectnamelist}    Get Element Attribute    xpath=//div[@class='kaow-option']    data-text
+    \    log    ${subjectnamelist}
+
+异常发起考试-考试名称校验
+    登录    18207550000    123456    学校    #检查学校元素是否存在
+    点击发起考试
+    输入错误的考试名称
+    Page Should Contain    考试名只能由    Loglevel=info    #检查是否出现‘考试名只能由’的字样
+    关闭浏览器
+
+异常发起考试-不选学校
+    登录    18207550000    123456    学校    #检查学校元素是否存在
+    点击发起考试
+    输入考试名称
+    选择考试年级    11    #11代表高二
+    选择考试类型    mock-exam    #mock-exam或final-exam
+    选择考试报表类型    0    #0或1
+    点击下一步
+    选择考试科目    数学
+    选择教研员    数学教研员
+    点击下一步
+    选择加入考生方式    2
+    点击完成
+    page should contain    请添加参加考试的学校    loglevel=info
+    点击确定
+    关闭浏览器

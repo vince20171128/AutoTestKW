@@ -1,0 +1,35 @@
+*** Settings ***
+Resource          BaseKeyword.txt
+
+*** Keywords ***
+登录
+    [Arguments]    ${user}    ${pwd}    ${checkinfo}
+    打开浏览器    http://www.kaow.cn
+    窗口最大化
+    输入用户名
+    输入密码
+    点击按钮    id=login
+    等待    id=quitSys
+    Element should contain    id=quitSys    退出
+    Page Should Contain    ${checkinfo}    Loglevel=info
+
+异常登录_错误用户名密码
+    [Arguments]    ${user}    ${pwd}
+    打开浏览器    http://www.kaow.cn
+    窗口最大化
+    输入用户名
+    输入密码
+    点击按钮    id=login
+    sleep    3
+    等待    id=login-error
+    Element should contain    id=login-error    手机号与密码不匹配，请重新输入
+    关闭浏览器
+
+异常登录_空输入
+    打开浏览器    http://www.kaow.cn
+    窗口最大化
+    点击按钮    id=login
+    sleep    3
+    等待    id=login-error
+    Element should contain    id=login-error    手机号不能为空
+    关闭浏览器

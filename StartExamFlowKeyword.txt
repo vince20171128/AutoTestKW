@@ -1,0 +1,60 @@
+*** Settings ***
+Resource          BaseKeyword.txt
+
+*** Keywords ***
+点击发起考试
+    等待    xpath=//iframe[@name='ifContent']
+    选择frame    xpath=//iframe[@name='ifContent']
+    等待    id=create-exam
+    点击按钮    id=create-exam
+
+输入考试名称
+    退出frame
+    等待    xpath=//iframe[@name='ifContent_tc']
+    选择frame    xpath=//iframe[@name='ifContent_tc']
+    ${systime}    Evaluate    random.randint(0,1000)    random
+    输入文本    id=exam-name    auto${systime}    #以auto+随机数命名
+
+选择考试年级
+    [Arguments]    ${grade}
+    选择radio    exam-grade    ${grade}
+
+选择考试类型
+    [Arguments]    ${examtype}
+    选择radio    exam-type    ${examtype}
+
+选择考试报表类型
+    [Arguments]    ${reporttype}
+    选择radio    report-type    ${reporttype}
+
+选择考试科目
+    [Arguments]    ${subjectname}
+    等待    xpath=.//*[@id='subjects-content']/div[1]/div[1]
+    点击元素    xpath=.//*[@id='subjects-content']/div[1]/div[1]
+    点击元素    xpath=//span[text()='${subjectname}']    #xpath=//span[@data-subject-code='10001']
+
+选择教研员
+    [Arguments]    ${researchname}
+    点击元素    xpath=.//*[@id='subjects-content']/div[1]/div[2]
+    点击元素    xpath=//div[text()='${researchname}']    #xpath=//div[text()='${researchname}']
+
+选择加入考生方式
+    [Arguments]    ${type}
+    sleep    3
+    点击元素    xpath=.//*[@id='exam-info-wrapper']/div[3]/div[3]/div[${type}]/input
+
+选择参考学校
+    点击元素    id=add-school
+    退出frame
+    等待    xpath=//iframe[@src="infoManager/add-exam-school.html"]
+    选择frame    xpath=//iframe[@src="infoManager/add-exam-school.html"]
+    等待    xpath=.//*[@id='school-list']/div[1]/input
+    点击复选框    xpath=.//*[@id='school-list']/div[1]/input
+    点击复选框    xpath=.//*[@id='school-list']/div[2]/input
+    点击元素    id=submitBtn
+
+输入错误的考试名称
+    退出frame
+    等待    xpath=//iframe[@name='ifContent_tc']
+    选择frame    xpath=//iframe[@name='ifContent_tc']
+    输入文本    id=exam-name    $%^&*
